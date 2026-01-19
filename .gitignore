@@ -1,0 +1,47 @@
+# --- Build and Gradle ---
+# Gradle cache and build folders
+.gradle/
+build/
+/*/build/
+
+# --- IDE - Android Studio / IntelliJ ---
+# Ignore IDE specific files and project configurations
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# --- Local Configurations ---
+# Local SDK paths and sensitive information
+local.properties
+
+# --- Output Artifacts ---
+# Ignore compiled packages (APKs and App Bundles)
+*.apk
+*.apks
+*.aab
+
+# --- Security (Keys and Keystores) ---
+# NEVER check in your signing keys to version control
+*.jks
+*.keystore
+*.p12
+*.properties
+!gradle.properties
+
+# --- Native Build (C/C++) ---
+# Files generated for projects with native code
+.externalNativeBuild/
+.cxx/
+cmake-build-debug/
+
+# --- Logs and Captures ---
+# System logs and profiler/capture files
+*.log
+/captures/
+
+# --- Operating System ---
+# Temporary files from Windows and macOS
+.DS_Store
+Thumbs.db
