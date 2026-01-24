@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "NinhoHub"
 include(":app")
 include(":core-ui")
+include(":feature-home:home-presentation")
