@@ -23,6 +23,5 @@ rootProject.name = "NinhoHub"
 include(":app")
 include(":core-ui")
 include(":core-navigation")
-include(":navigation")
 include(":feature-home:home-presentation")
 include(":feature-grocery:grocery-presentation")
