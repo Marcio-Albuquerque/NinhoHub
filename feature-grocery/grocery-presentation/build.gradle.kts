@@ -32,6 +32,7 @@ android {
 
 dependencies {
     implementation(project(":core-ui"))
+    implementation(project(":core-navigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

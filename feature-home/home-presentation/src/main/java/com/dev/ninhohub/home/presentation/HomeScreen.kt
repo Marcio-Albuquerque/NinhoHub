@@ -1,6 +1,7 @@
 package com.dev.ninhohub.home.presentation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -11,27 +12,21 @@ import com.dev.ninhohub.core.ui.theme.NinhoHubTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onNavigateToGrocery: () -> Unit) {
     Scaffold() { innerPadding ->
-        Greeting(
-            name = "Home Screen",
+        Button(
+            onClick = onNavigateToGrocery,
             modifier = Modifier.padding(innerPadding)
-        )
+        ) {
+            Text(text = "Ir para Grocery")
+        }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
     NinhoHubTheme {
-        HomeScreen()
+        HomeScreen(onNavigateToGrocery = {})
     }
 }
