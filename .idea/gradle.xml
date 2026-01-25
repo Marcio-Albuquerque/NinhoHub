@@ -11,11 +11,13 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core-navigation" />
             <option value="$PROJECT_DIR$/core-ui" />
             <option value="$PROJECT_DIR$/feature-grocery" />
             <option value="$PROJECT_DIR$/feature-grocery/grocery-presentation" />
             <option value="$PROJECT_DIR$/feature-home" />
             <option value="$PROJECT_DIR$/feature-home/home-presentation" />
+            <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
       </GradleProjectSettings>
