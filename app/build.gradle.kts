@@ -38,6 +38,8 @@ android {
 dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-navigation"))
+    implementation(project(":feature-home:home-presentation"))
+    implementation(project(":feature-grocery:grocery-presentation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
