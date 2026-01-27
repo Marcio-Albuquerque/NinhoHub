@@ -5,8 +5,8 @@ import androidx.navigation.compose.composable
 import com.dev.ninhohub.core.navigation.Routes
 import com.dev.ninhohub.grocery.presentation.ui.GroceryScreen
 
-fun NavGraphBuilder.groceryNavigation() {
+fun NavGraphBuilder.groceryNavigation(onBackClick: () -> Unit) {
     composable<Routes.Grocery> {
-        GroceryScreen()
+        GroceryScreen(onBackClick = onBackClick)
     }
 }
