@@ -25,6 +25,10 @@ fun AppNavHost() {
                 navController.navigate(Routes.Grocery)
             }
         )
-        groceryNavigation()
+        groceryNavigation(
+            onBackClick = {
+                navController.popBackStack()
+            }
+        )
     }
 }
