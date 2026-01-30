@@ -6,8 +6,7 @@ val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
 
 //Base colors
-
-val Transparent = Color(0x00000000)
+val Gray = Color(0xFF888888)
 val Green = Color(0xFF008F39)
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)

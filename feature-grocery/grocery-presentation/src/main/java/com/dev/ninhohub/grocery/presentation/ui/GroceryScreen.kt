@@ -20,7 +20,7 @@ fun GroceryScreen(onBackClick: () -> Unit) {
             TcTopAppBarGradient(
                 title = stringResource(id = R.string.title_app_bar_grocery),
                 onBackClick = onBackClick,
-                onSearchClick = { /* Ação de pesquisa */ }
+                onSearchQueryChange = { /* Ação de pesquisa */ }
             )
         }
     ) { innerPadding ->
