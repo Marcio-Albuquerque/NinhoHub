@@ -20,20 +20,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dev.ninhohub.core.ui.components.DsTopAppBarTitle
@@ -45,7 +52,9 @@ import com.dev.ninhohub.core.ui.theme.Gray
 import com.dev.ninhohub.core.ui.theme.IconClose
 import com.dev.ninhohub.core.ui.theme.IconSearch
 import com.dev.ninhohub.core.ui.theme.White
+import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.grocery.presentation.R
+import com.dev.ninhohub.grocery.presentation.ui.composables.states.TcTopAppBarUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
@@ -54,17 +63,59 @@ fun TcTopAppBarGradient(
     onBackClick: () -> Unit = {},
     onSearchQueryChange: (String) -> Unit = {}
 ) {
-    var isSearchOpen by remember { mutableStateOf(false) }
-    var searchText by remember { mutableStateOf("") }
-    var isFocused by remember { mutableStateOf(false) }
+    var uiState by remember { mutableStateOf(TcTopAppBarUiState()) }
 
-    TcTopAppBarBackground {
+    TcTopAppBarGradientContent(
+        title = title,
+        uiState = uiState,
+        onBackClick = onBackClick,
+        onToggleSearch = {
+            uiState = if (uiState.isSearchOpen) {
+                onSearchQueryChange("")
+                uiState.copy(isSearchOpen = false, searchText = "")
+            } else {
+                uiState.copy(isSearchOpen = true)
+            }
+        },
+        onSearchQueryChange = {
+            uiState = uiState.copy(searchText = it)
+            onSearchQueryChange(it)
+        },
+        onFocusChanged = {
+            uiState = uiState.copy(isFocused = it)
+        }
+    )
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun TcTopAppBarGradientContent(
+    title: String,
+    uiState: TcTopAppBarUiState,
+    onBackClick: () -> Unit,
+    onToggleSearch: () -> Unit,
+    onSearchQueryChange: (String) -> Unit,
+    onFocusChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(uiState.isSearchOpen) {
+        if (uiState.isSearchOpen) {
+            focusRequester.requestFocus()
+        } else {
+            focusManager.clearFocus()
+        }
+    }
+
+    TcTopAppBarBackground(modifier = modifier) {
         Row(
             modifier = Modifier
                 .statusBarsPadding()
                 .height(64.dp)
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp),
+                .padding(horizontal = spacing.xs),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -72,7 +123,7 @@ fun TcTopAppBarGradient(
                 contentAlignment = Alignment.CenterStart
             ) {
                 this@Row.AnimatedVisibility(
-                    visible = !isSearchOpen,
+                    visible = !uiState.isSearchOpen,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -80,10 +131,10 @@ fun TcTopAppBarGradient(
                 }
 
                 this@Row.AnimatedVisibility(
-                    visible = isSearchOpen,
+                    visible = uiState.isSearchOpen,
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .padding(horizontal = 8.dp),
+                        .padding(horizontal = spacing.sm),
                     enter = expandHorizontally(
                         expandFrom = Alignment.End,
                         animationSpec = tween(300)
@@ -94,28 +145,18 @@ fun TcTopAppBarGradient(
                     ) + fadeOut()
                 ) {
                     SearchField(
-                        searchText = searchText,
-                        isFocused = isFocused,
-                        onValueChange = {
-                            searchText = it
-                            onSearchQueryChange(it)
-                        },
-                        onFocusChanged = { isFocused = it }
+                        searchText = uiState.searchText,
+                        focusRequester = focusRequester,
+                        onValueChange = onSearchQueryChange,
+                        onFocusChanged = onFocusChanged,
+                        onSearchAction = { focusManager.clearFocus() }
                     )
                 }
             }
 
             SearchToggleButton(
-                isSearchOpen = isSearchOpen,
-                onClick = {
-                    if (isSearchOpen) {
-                        isSearchOpen = false
-                        searchText = ""
-                        onSearchQueryChange("")
-                    } else {
-                        isSearchOpen = true
-                    }
-                }
+                isSearchOpen = uiState.isSearchOpen,
+                onClick = onToggleSearch
             )
         }
     }
@@ -123,10 +164,11 @@ fun TcTopAppBarGradient(
 
 @Composable
 private fun TcTopAppBarBackground(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(
                 brush = Brush.horizontalGradient(
@@ -154,24 +196,27 @@ private fun TitleContent(
 @Composable
 private fun SearchField(
     searchText: String,
-    isFocused: Boolean,
+    focusRequester: FocusRequester,
     onValueChange: (String) -> Unit,
-    onFocusChanged: (Boolean) -> Unit
+    onFocusChanged: (Boolean) -> Unit,
+    onSearchAction: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .height(40.dp)
             .fillMaxWidth()
             .background(White, shape = RoundedCornerShape(20.dp))
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = spacing.md),
         verticalAlignment = Alignment.CenterVertically
     ) {
         BasicTextField(
             value = searchText,
             onValueChange = onValueChange,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { onSearchAction() }),
             decorationBox = { innerTextField ->
                 Box(contentAlignment = Alignment.CenterStart) {
-                    if (searchText.isEmpty() && !isFocused) {
+                    if (searchText.isEmpty()) {
                         Text(
                             text = stringResource(id = R.string.searchHilt),
                             color = Gray,
@@ -183,6 +228,7 @@ private fun SearchField(
             },
             modifier = Modifier
                 .fillMaxWidth()
+                .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     onFocusChanged(focusState.isFocused)
                 }
