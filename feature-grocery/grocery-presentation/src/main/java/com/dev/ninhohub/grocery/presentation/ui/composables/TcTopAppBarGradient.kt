@@ -44,13 +44,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dev.ninhohub.core.ui.components.DsTopAppBarTitle
-import com.dev.ninhohub.core.ui.theme.ArrowLeft
+import com.dev.ninhohub.core.ui.icons.IconsSource
 import com.dev.ninhohub.core.ui.theme.Blue700
 import com.dev.ninhohub.core.ui.theme.Blue800
 import com.dev.ninhohub.core.ui.theme.Blue900
 import com.dev.ninhohub.core.ui.theme.Gray
-import com.dev.ninhohub.core.ui.theme.IconClose
-import com.dev.ninhohub.core.ui.theme.IconSearch
 import com.dev.ninhohub.core.ui.theme.White
 import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.grocery.presentation.R
@@ -187,7 +185,11 @@ private fun TitleContent(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onBackClick) {
-            Icon(imageVector = ArrowLeft, contentDescription = null, tint = White)
+            Icon(
+                painter = IconsSource.ARROW_LEFT.asPainter,
+                contentDescription = null,
+                tint = White
+            )
         }
         DsTopAppBarTitle(text = title)
     }
@@ -251,8 +253,9 @@ private fun SearchToggleButton(
             },
             label = "SearchIconTransition"
         ) { isOpen ->
+            val currentIcon = if (isOpen) IconsSource.CLOSE else IconsSource.SEARCH
             Icon(
-                imageVector = if (isOpen) IconClose else IconSearch,
+                painter = currentIcon.asPainter,
                 contentDescription = null,
                 tint = White
             )
