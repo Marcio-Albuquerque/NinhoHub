@@ -1,4 +1,4 @@
-package com.dev.ninhohub.grocery.presentation.ui.composables
+package com.dev.ninhohub.grocery.presentation.composables
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -52,7 +52,7 @@ import com.dev.ninhohub.core.ui.theme.Gray
 import com.dev.ninhohub.core.ui.theme.White
 import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.grocery.presentation.R
-import com.dev.ninhohub.grocery.presentation.ui.composables.states.TcTopAppBarUiState
+import com.dev.ninhohub.grocery.presentation.composables.states.TcTopAppBarUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable

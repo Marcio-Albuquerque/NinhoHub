@@ -1,4 +1,4 @@
-package com.dev.ninhohub.grocery.presentation.ui.composables.states
+package com.dev.ninhohub.grocery.presentation.composables.states
 
 data class TcTopAppBarUiState(
     val isSearchOpen: Boolean = false,

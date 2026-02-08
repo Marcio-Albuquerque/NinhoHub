@@ -1,4 +1,4 @@
-package com.dev.ninhohub.grocery.presentation.ui.composables
+package com.dev.ninhohub.grocery.presentation.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
