@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -38,6 +37,7 @@ import com.dev.ninhohub.core.ui.theme.Gray300
 import com.dev.ninhohub.core.ui.theme.Gray400
 import com.dev.ninhohub.core.ui.theme.Gray50
 import com.dev.ninhohub.core.ui.theme.White
+import com.dev.ninhohub.core.ui.theme.rounded
 import com.dev.ninhohub.core.ui.theme.spacing
 
 @Composable
@@ -103,14 +103,14 @@ private fun GroceryCardBackground(
             .fillMaxWidth()
             .shadow(
                 elevation = 8.dp,
-                shape = RoundedCornerShape(8.dp),
+                shape = rounded.sm,
                 spotColor = Blue600,
                 ambientColor = Blue600
             )
             .border(
                 width = 1.dp,
                 color = Blue600.copy(alpha = 0.2f),
-                shape = RoundedCornerShape(12.dp)
+                shape = rounded.md
             )
     ) {
         Box(
@@ -164,7 +164,7 @@ private fun QuantityBadge(quantity: String) {
 
 @Composable
 private fun GroceryIconBox() {
-    val shape = RoundedCornerShape(12.dp)
+    val shape = rounded.md
 
     Box(
         modifier = Modifier
