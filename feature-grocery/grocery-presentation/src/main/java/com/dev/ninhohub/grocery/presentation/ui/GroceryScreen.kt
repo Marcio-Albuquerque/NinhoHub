@@ -1,20 +1,42 @@
 package com.dev.ninhohub.grocery.presentation.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.dev.ninhohub.core.ui.theme.NinhoHubTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dev.ninhohub.core.ui.theme.BackgroundDarkPreview
+import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.grocery.presentation.R
-import com.dev.ninhohub.grocery.presentation.ui.composables.TcTopAppBarGradient
+import com.dev.ninhohub.grocery.presentation.composables.TcCardItemGrocery
+import com.dev.ninhohub.grocery.presentation.composables.TcTopAppBarGradient
+import com.dev.ninhohub.grocery.presentation.model.ListGroceryViewObject
+import com.dev.ninhohub.grocery.presentation.viewmodel.GroceryViewModel
+import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GroceryScreen(onBackClick: () -> Unit) {
+fun GroceryScreen(
+    onBackClick: () -> Unit,
+    viewModel: GroceryViewModel = viewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Scaffold(
         topBar = {
             TcTopAppBarGradient(
@@ -24,25 +46,51 @@ fun GroceryScreen(onBackClick: () -> Unit) {
             )
         }
     ) { innerPadding ->
-        Greeting(
-            name = "Grocery Screen",
-            modifier = Modifier.padding(innerPadding)
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(BackgroundDarkPreview)
+        ) {
+            when (val state = uiState) {
+                is GroceryUiState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+                is GroceryUiState.Success -> {
+                    GroceryList(
+                        items = state.items,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                is GroceryUiState.Error -> {
+                    Text(
+                        text = state.message,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
+private fun GroceryList(
+    items: List<ListGroceryViewObject>,
+    modifier: Modifier = Modifier
+) {
+    Column(
         modifier = modifier
-    )
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun GroceryScreenPreview() {
-    NinhoHubTheme {
-        GroceryScreen(onBackClick = {})
+            .verticalScroll(rememberScrollState())
+            .padding(spacing.md),
+        verticalArrangement = Arrangement.spacedBy(spacing.md)
+    ) {
+        items.forEach { item ->
+            TcCardItemGrocery(
+                product = item.product,
+                quantity = item.quantity,
+                description = item.description
+            )
+        }
     }
 }
