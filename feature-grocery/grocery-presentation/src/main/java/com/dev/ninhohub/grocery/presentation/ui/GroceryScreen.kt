@@ -14,29 +14,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dev.ninhohub.core.ui.theme.BackgroundDarkPreview
 import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.grocery.presentation.R
 import com.dev.ninhohub.grocery.presentation.composables.TcCardItemGrocery
 import com.dev.ninhohub.grocery.presentation.composables.TcTopAppBarGradient
 import com.dev.ninhohub.grocery.presentation.model.ListGroceryViewObject
-import com.dev.ninhohub.grocery.presentation.viewmodel.GroceryViewModel
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroceryScreen(
-    onBackClick: () -> Unit,
-    viewModel: GroceryViewModel = viewModel()
+    uiState: GroceryUiState,
+    onBackClick: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     Scaffold(
         topBar = {
             TcTopAppBarGradient(
@@ -52,19 +46,19 @@ fun GroceryScreen(
                 .padding(innerPadding)
                 .background(BackgroundDarkPreview)
         ) {
-            when (val state = uiState) {
+            when (uiState) {
                 is GroceryUiState.Loading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
                 is GroceryUiState.Success -> {
                     GroceryList(
-                        items = state.items,
+                        items = uiState.items,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
                 is GroceryUiState.Error -> {
                     Text(
-                        text = state.message,
+                        text = uiState.message,
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )

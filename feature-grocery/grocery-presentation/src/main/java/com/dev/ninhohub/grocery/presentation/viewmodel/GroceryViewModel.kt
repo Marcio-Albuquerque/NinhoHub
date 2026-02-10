@@ -4,14 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dev.ninhohub.grocery.presentation.model.ListGroceryViewObject
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
-class GroceryViewModel : ViewModel() {
+@HiltViewModel
+class GroceryViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<GroceryUiState>(GroceryUiState.Loading)
     val uiState: StateFlow<GroceryUiState> = _uiState.asStateFlow()
