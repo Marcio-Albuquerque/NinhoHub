@@ -16,6 +16,9 @@ dependencyResolutionManagement {
 rootProject.name = "NinhoHub"
 include(":app")
 include(":core-ui")
+include(":core-database")
 include(":core-navigation")
 include(":feature-home:home-presentation")
+include(":feature-grocery:grocery-domain")
+include(":feature-grocery:grocery-data")
 include(":feature-grocery:grocery-presentation")

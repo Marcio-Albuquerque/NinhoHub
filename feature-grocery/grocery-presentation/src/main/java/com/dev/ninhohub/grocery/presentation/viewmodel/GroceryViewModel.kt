@@ -2,61 +2,69 @@ package com.dev.ninhohub.grocery.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dev.ninhohub.grocery.presentation.model.ListGroceryViewObject
+import com.dev.ninhohub.grocery.domain.model.GroceryItemDomain
+import com.dev.ninhohub.grocery.domain.usecase.DeleteAllGroceryItemsUseCase
+import com.dev.ninhohub.grocery.domain.usecase.DeleteGroceryItemUseCase
+import com.dev.ninhohub.grocery.domain.usecase.GetGroceryItemsUseCase
+import com.dev.ninhohub.grocery.domain.usecase.SaveGroceryItemUseCase
+import com.dev.ninhohub.grocery.presentation.mapper.toGroceryViewObject
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class GroceryViewModel @Inject constructor() : ViewModel() {
+class GroceryViewModel @Inject constructor(
+    private val getGroceryItemsUseCase: GetGroceryItemsUseCase,
+    private val saveGroceryItemUseCase: SaveGroceryItemUseCase,
+    private val deleteGroceryItemUseCase: DeleteGroceryItemUseCase,
+    private val deleteAllGroceryItemsUseCase: DeleteAllGroceryItemsUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<GroceryUiState>(GroceryUiState.Loading)
     val uiState: StateFlow<GroceryUiState> = _uiState.asStateFlow()
 
     init {
+        //TODO Mock para visualizar os dados
+        viewModelScope.launch {
+            deleteAllGroceryItemsUseCase()
+            addItem("Café", "2", null)
+            addItem("Arroz", "4", "Pacote")
+            addItem("Feijão", "2", null)
+            addItem("Carne", "2 kg", "Apenas patina")
+        }
         loadGroceries()
     }
 
     private fun loadGroceries() {
+        _uiState.value = GroceryUiState.Loading
+
         viewModelScope.launch {
-            _uiState.value = GroceryUiState.Loading
-            delay(1000) // Simulating network delay
-            _uiState.value = GroceryUiState.Success(
-                items = listOf(
-                    ListGroceryViewObject(
-                        product = "Arroz",
-                        quantity = "5kg",
-                        description = "Tipo 1, agulhinha"
-                    ),
-                    ListGroceryViewObject(
-                        product = "Feijão",
-                        quantity = "2kg",
-                        description = "Carioca"
-                    ),
-                    ListGroceryViewObject(
-                        product = "Açúcar",
-                        quantity = "1kg"
-                    ),
-                    ListGroceryViewObject(
-                        product = "Café",
-                        quantity = "500g",
-                        description = "Torrado e moído extra forte"
-                    ),
-                    ListGroceryViewObject(
-                        product = "Leite",
-                        quantity = "12L",
-                        description = "Integral"
-                    ),
-                    ListGroceryViewObject(
-                        product = "Óleo de Soja",
-                        quantity = "2 unidades"
+            getGroceryItemsUseCase()
+                .catch { e ->
+                    _uiState.value = GroceryUiState.Error(e.message ?: "Erro")
+                }
+                .collect { items ->
+                    _uiState.value = GroceryUiState.Success(
+                        items = items.map { it.toGroceryViewObject() }
                     )
-                )
+                }
+        }
+    }
+
+    private fun addItem(name: String, quantity: String, description: String?) {
+        viewModelScope.launch {
+            saveGroceryItemUseCase(
+                GroceryItemDomain(
+                    name = name,
+                    quantity = quantity,
+                    description = description,
+                ),
             )
         }
     }
