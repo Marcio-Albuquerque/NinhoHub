@@ -22,7 +22,7 @@ import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.grocery.presentation.R
 import com.dev.ninhohub.grocery.presentation.composables.TcCardItemGrocery
 import com.dev.ninhohub.grocery.presentation.composables.TcTopAppBarGradient
-import com.dev.ninhohub.grocery.presentation.model.ListGroceryViewObject
+import com.dev.ninhohub.grocery.presentation.model.GroceryItemViewObject
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +70,7 @@ fun GroceryScreen(
 
 @Composable
 private fun GroceryList(
-    items: List<ListGroceryViewObject>,
+    items: List<GroceryItemViewObject>,
     modifier: Modifier = Modifier
 ) {
     Column(
