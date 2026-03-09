@@ -3,6 +3,7 @@ package com.dev.ninhohub.core.ui.icons
 import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -25,7 +26,8 @@ enum class IconsSource(
     SHOPPING_CART("shopping_cart", vector = Icons.Default.ShoppingCart),
     ARROW_LEFT("arrow_left", vector = Icons.AutoMirrored.Filled.ArrowBack),
     SEARCH("search", vector = Icons.Default.Search),
-    CLOSE("close", vector = Icons.Default.Close);
+    CLOSE("close", vector = Icons.Default.Close),
+    CHECK("check", vector = Icons.Default.Check);
 
     val asPainter: Painter
         @Composable

@@ -17,6 +17,7 @@ fun NavGraphBuilder.groceryNavigation(onBackClick: () -> Unit) {
 
         GroceryScreen(
             uiState = uiState,
+            onAction = viewModel::onAction,
             onBackClick = onBackClick
         )
     }
