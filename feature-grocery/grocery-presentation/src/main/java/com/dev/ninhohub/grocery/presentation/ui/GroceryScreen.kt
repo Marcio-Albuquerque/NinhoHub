@@ -23,12 +23,14 @@ import com.dev.ninhohub.grocery.presentation.R
 import com.dev.ninhohub.grocery.presentation.composables.TcCardItemGrocery
 import com.dev.ninhohub.grocery.presentation.composables.TcTopAppBarGradient
 import com.dev.ninhohub.grocery.presentation.model.GroceryItemViewObject
+import com.dev.ninhohub.grocery.presentation.states.GroceryUiAction
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroceryScreen(
     uiState: GroceryUiState,
+    onAction: (GroceryUiAction) -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -53,6 +55,7 @@ fun GroceryScreen(
                 is GroceryUiState.Success -> {
                     GroceryList(
                         items = uiState.items,
+                        onAction = onAction,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -71,6 +74,7 @@ fun GroceryScreen(
 @Composable
 private fun GroceryList(
     items: List<GroceryItemViewObject>,
+    onAction: (GroceryUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -83,7 +87,9 @@ private fun GroceryList(
             TcCardItemGrocery(
                 product = item.product,
                 quantity = item.quantity,
-                description = item.description
+                description = item.description,
+                isChecked = item.isChecked,
+                onCheckedChange = { onAction(GroceryUiAction.SelectItem(item)) }
             )
         }
     }

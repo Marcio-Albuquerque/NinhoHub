@@ -7,10 +7,12 @@ import com.dev.ninhohub.grocery.domain.usecase.DeleteAllGroceryItemsUseCase
 import com.dev.ninhohub.grocery.domain.usecase.DeleteGroceryItemUseCase
 import com.dev.ninhohub.grocery.domain.usecase.GetGroceryItemsUseCase
 import com.dev.ninhohub.grocery.domain.usecase.SaveGroceryItemUseCase
+import com.dev.ninhohub.grocery.presentation.mapper.toDomain
 import com.dev.ninhohub.grocery.presentation.mapper.toGroceryViewObject
+import com.dev.ninhohub.grocery.presentation.model.GroceryItemViewObject
+import com.dev.ninhohub.grocery.presentation.states.GroceryUiAction
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,6 +41,18 @@ class GroceryViewModel @Inject constructor(
             addItem("Carne", "2 kg", "Apenas patina")
         }
         loadGroceries()
+    }
+
+    fun onAction(action: GroceryUiAction) {
+        when (action) {
+            is GroceryUiAction.SelectItem -> selectItem(action.item)
+        }
+    }
+
+    private fun selectItem(item: GroceryItemViewObject) {
+        viewModelScope.launch {
+            saveGroceryItemUseCase(item.toDomain().copy(isChecked = !item.isChecked))
+        }
     }
 
     private fun loadGroceries() {
