@@ -20,7 +20,7 @@ android {
 
 dependencies {
     implementation(project(":feature-grocery:grocery-domain"))
-    implementation(project(":core-database"))
+    implementation(project(":core:database"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
