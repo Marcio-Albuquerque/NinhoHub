@@ -22,7 +22,7 @@ include(":core:database")
 include(":core:navigation")
 
 // Módulos Feature
-include(":feature-home:home-presentation")
-include(":feature-grocery:grocery-domain")
-include(":feature-grocery:grocery-data")
-include(":feature-grocery:grocery-presentation")
+include(":feature:home:presentation")
+include(":feature:grocery:domain")
+include(":feature:grocery:data")
+include(":feature:grocery:presentation")
