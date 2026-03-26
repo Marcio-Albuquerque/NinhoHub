@@ -21,8 +21,12 @@ include(":core:ui")
 include(":core:database")
 include(":core:navigation")
 
-// Módulos Feature
-include(":feature:home:presentation")
+// Módulos Feature Home
+include(":feature:home:api")
+include(":feature:home:impl")
+
+// Módulos Feature Grocery
+include(":feature:grocery:api")
+include(":feature:grocery:impl")
 include(":feature:grocery:domain")
 include(":feature:grocery:data")
-include(":feature:grocery:presentation")
