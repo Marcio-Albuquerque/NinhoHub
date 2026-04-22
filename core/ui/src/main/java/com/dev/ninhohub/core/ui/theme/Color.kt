@@ -11,6 +11,8 @@ val White = Color(0xFFFFFFFF)
 val Green = Color(0xFF008F39)
 val Gray  = Color(0xFF888888)
 
+val Red = Color(0xFFAD3128)
+
 // Blue Palette
 val Blue950 = Color(0xFF003366)
 val Blue900 = Color(0xFF0D47A1)
@@ -19,6 +21,7 @@ val Blue700 = Color(0xFF1E88E5)
 val Blue600 = Color(0xFF0052CC)
 
 // Gray Palette (Neutral)
+val Gray500 = Color(0xFF898D93)
 val Gray400 = Color(0xFFCED5DB)
 val Gray300 = Color(0xFFDEE4EA)
 val Gray200 = Color(0xFFEBF1F5)

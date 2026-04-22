@@ -21,6 +21,7 @@ import com.dev.ninhohub.core.ui.theme.BackgroundDarkPreview
 import com.dev.ninhohub.core.ui.theme.spacing
 import com.dev.ninhohub.feature.grocery.api.R
 import com.dev.ninhohub.grocery.presentation.composables.TcCardItemGrocery
+import com.dev.ninhohub.grocery.presentation.composables.TcSwipeableGroceryCardWrapper
 import com.dev.ninhohub.grocery.presentation.composables.TcTopAppBarGradient
 import com.dev.ninhohub.grocery.presentation.model.GroceryItemViewObject
 import com.dev.ninhohub.grocery.presentation.states.GroceryUiAction
@@ -84,12 +85,14 @@ private fun GroceryList(
         verticalArrangement = Arrangement.spacedBy(spacing.md)
     ) {
         items.forEach { item ->
-            TcCardItemGrocery(
+            TcSwipeableGroceryCardWrapper(
                 product = item.product,
                 quantity = item.quantity,
                 description = item.description,
                 isChecked = item.isChecked,
-                onCheckedChange = { onAction(GroceryUiAction.SelectItem(item)) }
+                onCheckedChange = { onAction(GroceryUiAction.SelectItem(item)) },
+                onEditClick = { /* TODO: Implementar edição no futuro */ },
+                onDeleteClick = { /* TODO: Implementar exclusão no futuro */ }
             )
         }
     }
